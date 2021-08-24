@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/Dogpaw
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+
+    properties:
+      hibernate:
+        format_sql: true
+
+logging:
+  level:
+    org.hibernate.SQL: debug  # 로거를 통해 JPA에서 자동으로 생성하는 쿼리를 보려고 할 때 출력
+    org.hibernate.type: trace # SQL 로그 구체적인 value값 출력
