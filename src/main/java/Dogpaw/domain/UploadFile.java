@@ -12,18 +12,19 @@ import javax.persistence.Id;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @RequiredArgsConstructor
-public class File {
+public class UploadFile {
     @Id @GeneratedValue
     @Column(name = "File_ID")
     private Long id;
 
     @NonNull
-    private String fileName;
+    private String originName;
 
     @NonNull
-    private String contentType;
+    private String fileName;
+
+    @NonNull    private String contentType;
 
     @NonNull
     private String path;
-
 }
