@@ -21,4 +21,8 @@ public class User {
     @Getter(AccessLevel.NONE)
     @OneToMany(mappedBy = "user")
     private List<UserChannel> userChannels = new ArrayList<>();
+
+    @Getter(AccessLevel.NONE)
+    @OneToMany(mappedBy = "user")
+    private List<UserWorkspace> userWorkspaces = new ArrayList<>();
 }

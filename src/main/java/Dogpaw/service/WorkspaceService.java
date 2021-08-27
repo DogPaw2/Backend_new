@@ -1,12 +1,18 @@
 package Dogpaw.service;
 
-import Dogpaw.domain.Workspace;
+import Dogpaw.domain.*;
+import Dogpaw.repository.UserChannelRepository;
+import Dogpaw.repository.UserRepository;
+import Dogpaw.repository.UserWorkspaceRepository;
 import Dogpaw.repository.WorkspaceRepository;
 import javassist.NotFoundException;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.jdbc.Work;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -15,8 +21,23 @@ public class WorkspaceService {
 
     @NonNull
     private final WorkspaceRepository workspaceRepository;
+    @NonNull
+    private final UserRepository userRepository;
+    @NonNull
+    private final UserWorkspaceRepository userWorkspaceRepository;
 
-    public Long saveWorkSpace (Workspace workspace) throws ArgumentNullException, InvalidArgumentException {
+    public void addUser(Long userId, Long channelId){
+        Workspace workspace = workspaceRepository.findById(channelId).get();
+        User user = userRepository.findById(userId).get();
+
+        userWorkspaceRepository.save(UserWorkspace.builder()
+                .user(user)
+                .workspace(workspace)
+                .build());
+
+    }
+
+    public Long saveWorkSpace (Workspace workspace, Long userId) throws ArgumentNullException, InvalidArgumentException {
         //fail fast pattern
         //if Argument is invalid, dont do any logic
         if(workspace == null){
@@ -26,6 +47,7 @@ public class WorkspaceService {
             throw new InvalidArgumentException("Work Space Id or URl is null");
         }
         Workspace save = workspaceRepository.save(workspace);
+        addUser(userId, workspace.getId());
 
         return save.getId();
 
@@ -41,6 +63,11 @@ public class WorkspaceService {
 
         workspaceRepository.deleteById(id);
 
+    }
+
+    public List<UserWorkspace> getWorkspaceList(Long id) throws NotFoundException{
+        User user = userRepository.findById(id).get();
+        return userWorkspaceRepository.findAllByUser(user);
     }
 
 

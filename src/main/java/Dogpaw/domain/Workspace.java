@@ -3,6 +3,8 @@ package Dogpaw.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -22,4 +24,7 @@ public class Workspace {
     @NonNull
     private String url;
 
+    @Getter(AccessLevel.NONE)
+    @OneToMany(mappedBy = "workspace")
+    private List<UserWorkspace> users = new ArrayList<>();
 }

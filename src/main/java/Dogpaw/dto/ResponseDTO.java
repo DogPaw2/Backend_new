@@ -70,4 +70,11 @@ public class ResponseDTO {
         private List<IdeaMapping> ideas;
     }
 
+    @Data
+    @AllArgsConstructor
+    public static class WorkspaceResponse{
+        Boolean success;
+        private List<UserWorkspace> workspaceList;
+    }
+
 }
