@@ -23,7 +23,8 @@ public class UploadFile {
     @NonNull
     private String fileName;
 
-    @NonNull    private String contentType;
+    @NonNull
+    private String contentType;
 
     @NonNull
     private String path;
