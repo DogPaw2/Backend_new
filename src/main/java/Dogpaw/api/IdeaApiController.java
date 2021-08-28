@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
+@CrossOrigin(origins = "*")
 public class IdeaApiController {
     @NonNull
     private final IdeaService IdeaService;
