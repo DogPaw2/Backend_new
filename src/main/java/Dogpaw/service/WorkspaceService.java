@@ -25,6 +25,12 @@ public class WorkspaceService {
     private final UserRepository userRepository;
     @NonNull
     private final UserWorkspaceRepository userWorkspaceRepository;
+    @NonNull
+    private final ChattingService chattingService;
+    @NonNull
+    private final IdeaBoardService ideaBoardService;
+    @NonNull
+    private final ChannelService channelService;
 
     public void addUser(Long userId, Long channelId){
         Workspace workspace = workspaceRepository.findById(channelId).get();
@@ -37,7 +43,7 @@ public class WorkspaceService {
 
     }
 
-    public Long saveWorkSpace (Workspace workspace, Long userId) throws ArgumentNullException, InvalidArgumentException {
+    public Long saveWorkSpace (Workspace workspace, Long userId) throws ArgumentNullException, InvalidArgumentException, ChattingService.InvalidArgumentException, ChattingService.ArgumentNullException, IdeaBoardService.InvalidArgumentException, IdeaBoardService.ArgumentNullException, UserService.UserNotFoundException, ChannelService.ArgumentNullException, ChannelService.InvalidArgumentException {
         //fail fast pattern
         //if Argument is invalid, dont do any logic
         if(workspace == null){
@@ -46,6 +52,14 @@ public class WorkspaceService {
         if(workspace.getName().isEmpty() || workspace.getUrl().isEmpty()){
             throw new InvalidArgumentException("Work Space Id or URl is null");
         }
+        Chatting chatting = new Chatting();
+        IdeaBoard ideaBoard = new IdeaBoard();
+        chattingService.saveChatting(chatting);
+        ideaBoardService.saveIdeaBoard(ideaBoard);
+        Channel channel = new Channel("General", "-", chatting, ideaBoard);
+        channelService.saveChannel(channel, userId);
+        workspace.getChannels().add(channel);
+
         Workspace save = workspaceRepository.save(workspace);
         addUser(userId, workspace.getId());
 

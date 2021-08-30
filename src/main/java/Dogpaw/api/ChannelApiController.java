@@ -4,11 +4,7 @@ package Dogpaw.api;
 import Dogpaw.domain.*;
 import Dogpaw.dto.ChannelDTO;
 import Dogpaw.dto.ResponseDTO;
-import Dogpaw.service.ChannelService;
-import Dogpaw.service.ChattingService;
-import Dogpaw.service.IdeaBoardService;
-import Dogpaw.service.IdeaService;
-import Dogpaw.service.UserService;
+import Dogpaw.service.*;
 import javassist.NotFoundException;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -24,15 +20,14 @@ public class ChannelApiController {
     @NonNull
     private final ChannelService channelService;
     @NonNull
-    private final UserService userService;
-    @NonNull
     private final ChattingService chattingService;
-
     @NonNull
     private final IdeaBoardService ideaBoardService;
+    @NonNull
+    private final WorkspaceService workspaceService;
 
     @PostMapping("/channel")
-    public ResponseDTO.Create createUser(@RequestBody ChannelDTO.Create dto) throws ChannelService.InvalidArgumentException, ChannelService.ArgumentNullException, ChattingService.InvalidArgumentException, ChattingService.ArgumentNullException, IdeaBoardService.ArgumentNullException, IdeaBoardService.InvalidArgumentException, UserService.UserNotFoundException {
+    public ResponseDTO.Create createChannel(@RequestBody ChannelDTO.Create dto) throws ChannelService.InvalidArgumentException, ChannelService.ArgumentNullException, ChattingService.InvalidArgumentException, ChattingService.ArgumentNullException, IdeaBoardService.ArgumentNullException, IdeaBoardService.InvalidArgumentException, NotFoundException {
 
         Chatting chatting = new Chatting();
         IdeaBoard ideaBoard = new IdeaBoard();
@@ -43,11 +38,13 @@ public class ChannelApiController {
 
         Long saveId = channelService.saveChannel(channel, dto.getUserId());
 
+        Workspace workspace = workspaceService.findOne(dto.getWorkspaceId());
+        workspace.getChannels().add(channel);
         return new ResponseDTO.Create(saveId, true);
     }
 
     @DeleteMapping("/channel")
-    public ResponseDTO.Delete createChat(@RequestBody ChannelDTO.Delete dto) throws NotFoundException {
+    public ResponseDTO.Delete deleteChannel(@RequestBody ChannelDTO.Delete dto) throws NotFoundException {
         channelService.deleteByChannelId(dto.getId());
         chattingService.deleteByChattingId(dto.getId());
         ideaBoardService.deleteByIdeaBoardId(dto.getId());
@@ -56,10 +53,9 @@ public class ChannelApiController {
     }
 
     @GetMapping("/channel")
-    public ResponseDTO.ChannelResponse getChatting(@RequestBody ChannelDTO.Get dto) throws NotFoundException{
-        User user = userService.findOne(dto.getUserId());
-        List<UserChannelMapping> channelList = channelService.getChannelList(dto.getUserId());
-        return new ResponseDTO.ChannelResponse(true, channelList);
+    public ResponseDTO.ChannelResponse getChannel(@RequestParam Long channelId) throws NotFoundException{
+        Channel channel = channelService.findOne(channelId);
+        return new ResponseDTO.ChannelResponse(true, channel);
 
     }
 }

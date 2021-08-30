@@ -27,4 +27,8 @@ public class Workspace {
     @Getter(AccessLevel.NONE)
     @OneToMany(mappedBy = "workspace")
     private List<UserWorkspace> users = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="channel_id")
+    private List<Channel> channels = new ArrayList<>();
 }

@@ -1,15 +1,11 @@
 package Dogpaw.api;
 
 
-import Dogpaw.domain.User;
-import Dogpaw.domain.UserChannelMapping;
-import Dogpaw.domain.UserWorkspace;
-import Dogpaw.domain.Workspace;
+import Dogpaw.domain.*;
 import Dogpaw.dto.ChannelDTO;
 import Dogpaw.dto.ResponseDTO;
 import Dogpaw.dto.WorkSpaceDTO;
-import Dogpaw.service.UserService;
-import Dogpaw.service.WorkspaceService;
+import Dogpaw.service.*;
 import javassist.NotFoundException;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -27,10 +23,10 @@ public class WorkspaceApiController {
     @NonNull
     private final UserService userService;
 
-    @PostMapping("/workspace")
-    public ResponseDTO.Create createWorkspace(@RequestBody WorkSpaceDTO.Create dto) throws WorkspaceService.ArgumentNullException, WorkspaceService.InvalidArgumentException {
-        Workspace workspace = new Workspace(dto.getName(), dto.getUrl());
 
+    @PostMapping("/workspace")
+    public ResponseDTO.Create createWorkspace(@RequestBody WorkSpaceDTO.Create dto) throws WorkspaceService.ArgumentNullException, WorkspaceService.InvalidArgumentException, IdeaBoardService.ArgumentNullException, ChattingService.InvalidArgumentException, IdeaBoardService.InvalidArgumentException, ChannelService.InvalidArgumentException, ChattingService.ArgumentNullException, UserService.UserNotFoundException, ChannelService.ArgumentNullException {
+        Workspace workspace = new Workspace(dto.getName(), dto.getUrl());
         Long saveId = workspaceService.saveWorkSpace(workspace, dto.getUserId());
 
         return new ResponseDTO.Create(saveId, true);
@@ -42,11 +38,16 @@ public class WorkspaceApiController {
         return new ResponseDTO.Delete(true);
     }
 
-    @GetMapping("/workspace")
-    public ResponseDTO.WorkspaceResponse getWorkspace(@RequestBody WorkSpaceDTO.Get dto) throws NotFoundException{
-        User user = userService.findOne(dto.getUserId());
-        List<UserWorkspace> workspaceList = workspaceService.getWorkspaceList(dto.getUserId());
-        return new ResponseDTO.WorkspaceResponse(true, workspaceList);
+    @GetMapping("/workspace/all")
+    public ResponseDTO.WorkspaceAllResponse getAllWorkspace(@RequestParam Long userId) throws NotFoundException{
+        User user = userService.findOne(userId);
+        List<UserWorkspace> workspaceList = workspaceService.getWorkspaceList(userId);
+        return new ResponseDTO.WorkspaceAllResponse(true, workspaceList);
+    }
 
+    @GetMapping("/workspace")
+    public ResponseDTO.WorkspaceResponse getWorkspace(@RequestParam Long workspaceId) throws NotFoundException{
+        Workspace workspace = workspaceService.findOne(workspaceId);
+        return new ResponseDTO.WorkspaceResponse(true, workspace);
     }
 }
