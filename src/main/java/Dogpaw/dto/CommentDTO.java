@@ -12,6 +12,7 @@ public class CommentDTO {
     public static class Create extends Update {
         private Long userId;
         private Long chatId;
+        private Long messageId;
     }
 
     @Data

@@ -39,5 +39,4 @@ public class Chat {
 
     @OneToMany(mappedBy = "chat",  cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Comment> comments = new ArrayList<>();
-
 }

@@ -35,7 +35,6 @@ public class CommentService {
         comment.getChat().getComments().add(comment);
         Comment save = commentRepository.save(comment);
 
-
         return save.getId();
     }
 

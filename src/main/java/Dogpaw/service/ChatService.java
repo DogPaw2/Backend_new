@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -38,8 +39,13 @@ public class ChatService {
         chatRepository.deleteById(id);
     }
 
+    public Optional<Chat> checkChat(Long id) {
+        Optional<Chat> chat = chatRepository.findById(id);
+        return chat;
+    }
+
     public Chat findOne(Long id) throws NotFoundException{
-        Chat chat = chatRepository.findById(id).orElseThrow(() -> new ChatNotFoundException("Work space with id : " + id + "is not valid"));
+        Chat chat = chatRepository.findById(id).orElseThrow(() -> new ChatNotFoundException("Chat with id : " + id + "is not valid"));
         return chat;
     }
 
