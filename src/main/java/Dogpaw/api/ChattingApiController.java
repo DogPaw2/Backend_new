@@ -24,11 +24,10 @@ public class ChattingApiController {
 
 
     @GetMapping("/chatting")
-    public ResponseDTO.ChattingResponse getChatting(@RequestBody ChattingDTO.Get dto) throws NotFoundException{
-        Chatting chatting = chattingService.findOne(dto.getId());
-        List<ChatMapping> chatList = chatService.getChatList(dto.getId());
+    public ResponseDTO.ChattingResponse getChatting(@RequestParam Long chattingId) throws NotFoundException{
+        Chatting chatting = chattingService.findOne(chattingId);
+        List<ChatMapping> chatList = chatService.getChatList(chattingId);
         return new ResponseDTO.ChattingResponse(true, chatting, chatList);
-
     }
 
 }
