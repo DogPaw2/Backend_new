@@ -17,8 +17,6 @@ public class CommentDTO {
     @Data
     public static class Update {
         private String text;
-        private LocalDate date;
-        private LocalTime time;
     }
 
     @Data

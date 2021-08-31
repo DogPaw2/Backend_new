@@ -14,6 +14,9 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -31,8 +34,10 @@ public class CommentApiController {
     public ResponseDTO.Create createComment(@RequestBody CommentDTO.Create dto) throws NotFoundException, CommentService.InvalidArgumentException, CommentService.ArgumentNullException {
         Chat chat = chatService.findOne(dto.getChatId());
         User user = userService.findOne(dto.getUserId());
+        LocalDate date = LocalDate.now();
+        LocalTime time = LocalTime.now();
 
-        Comment comment = new Comment(user, dto.getText(),dto.getDate(), dto.getTime(), chat);
+        Comment comment = new Comment(user, dto.getText(),date, time, chat);
 
         Long saveId = commentService.saveComment(comment);
         return new ResponseDTO.Create(saveId, true);
