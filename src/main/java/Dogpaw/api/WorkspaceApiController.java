@@ -32,6 +32,12 @@ public class WorkspaceApiController {
         return new ResponseDTO.Create(saveId, true);
     }
 
+    @GetMapping("/workspace/url-check")
+    public ResponseDTO.BaseResponse checkURL(@RequestParam String url) throws NotFoundException {
+        boolean result = workspaceService.findByUrl(url);
+        return new ResponseDTO.BaseResponse(result);
+    }
+
     @DeleteMapping("/workspace")
     public ResponseDTO.Delete deleteWorkspace(@RequestBody WorkSpaceDTO.Delete dto) throws NotFoundException {
         workspaceService.deleteByWorkSpaceId(dto.getId());

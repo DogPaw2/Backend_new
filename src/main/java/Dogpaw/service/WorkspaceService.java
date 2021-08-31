@@ -72,6 +72,12 @@ public class WorkspaceService {
         return workspace;
     }
 
+    public boolean findByUrl(String url) throws NotFoundException {
+        Workspace workspace = workspaceRepository.findByUrl(url);
+        return workspace != null;
+    }
+
+
 
     public void deleteByWorkSpaceId(Long id) throws NotFoundException {
 
