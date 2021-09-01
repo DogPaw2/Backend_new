@@ -55,7 +55,7 @@ public class ResponseDTO {
     @AllArgsConstructor
     public static class ChannelResponse {
         Boolean success;
-        private List<UserChannelMapping> channelList;
+        private Channel channel;
     }
 
     @Data
@@ -72,6 +72,20 @@ public class ResponseDTO {
         Boolean success;
         private IdeaBoard ideaBoard;
         private List<IdeaMapping> ideas;
+    }
+
+    @Data
+    @AllArgsConstructor
+    public static class WorkspaceAllResponse{
+        Boolean success;
+        private List<UserWorkspace> workspaceList;
+    }
+
+    @Data
+    @AllArgsConstructor
+    public static class WorkspaceResponse{
+        Boolean success;
+        private Workspace workspace;
     }
 
     @Data

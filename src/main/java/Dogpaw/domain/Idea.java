@@ -42,22 +42,6 @@ public class Idea {
     @JoinColumn(name = "IdeaBoard_ID")
     private IdeaBoard ideaBoard;
 
-    public Idea(User user, String text, LocalDate date, LocalTime time, List<UploadFile> fileList, IdeaBoard ideaBoard){
-        this.user = user;
-        this.text = text;
-        this.date = date;
-        this.time = time;
-        for(UploadFile file : fileList){
-            this.fileList.add(file);
-        }
-        this.ideaBoard = ideaBoard;
-    }
-    /*
-    public void add(UploadFile file){
-        fileList.add(file);
-    }
-    */
+    @OneToMany(mappedBy = "idea",  cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Comment> comments = new ArrayList<>();
 }
-
-//    @OneToMany
-//    List<File> files_ID = new ArrayList<>();

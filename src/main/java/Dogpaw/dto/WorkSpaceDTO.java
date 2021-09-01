@@ -6,7 +6,7 @@ public class WorkSpaceDTO {
 
     @Data
     public static class Create extends Update{
-
+        private Long userId;
     }
 
     @Data
@@ -21,5 +21,10 @@ public class WorkSpaceDTO {
     @Data
     public static class Delete {
         private Long id;
+    }
+
+    @Data
+    public static class Get {
+        private Long userId;
     }
 }
