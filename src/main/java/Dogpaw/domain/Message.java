@@ -3,6 +3,8 @@ package Dogpaw.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -26,4 +28,7 @@ public class Message {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MESSEAGE_ID")
     private MessageRoom messageRoom;
+
+    @OneToMany(mappedBy = "message",  cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Comment2> comments2 = new ArrayList<>();
 }
