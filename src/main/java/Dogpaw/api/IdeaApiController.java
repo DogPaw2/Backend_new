@@ -28,6 +28,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -41,34 +43,33 @@ public class IdeaApiController {
 
 
     @PostMapping("/idea")
-    public ResponseDTO.Create createIdea(@RequestPart(value = "dto") IdeaDTO.Create dto, @RequestPart(value = "files") MultipartFile files) throws IdeaService.ArgumentNullException, IdeaService.InvalidArgumentException, NotFoundException, FileService.ArgumentNullException, FileService.InvalidArgumentException, IOException, NoSuchAlgorithmException {
+    public ResponseDTO.Create createIdea(@RequestPart(value = "dto") IdeaDTO.Create dto, @RequestPart(value = "files") MultipartFile[] files) throws IdeaService.ArgumentNullException, IdeaService.InvalidArgumentException, NotFoundException, FileService.ArgumentNullException, FileService.InvalidArgumentException, IOException, NoSuchAlgorithmException {
         IdeaBoard ideaBoard = IdeaBoardService.findOne(dto.getIdeaBoardId());
         User user = userService.findOne(dto.getUserId());
+        Idea idea = new Idea(user, dto.getText(), dto.getDate(), dto.getTime(), ideaBoard);
+        Long saveId = IdeaService.saveIdea(idea);
 
+        if(!files[0].isEmpty()) {
+            for(MultipartFile file : files) {
+                String originFileName = file.getOriginalFilename();
+                String fileName = new MD5Generator(originFileName).toString();
+                String contentType = file.getContentType();
+                String savePath = System.getProperty("user.dir") + "/ideaFiles";
 
-        String originFileName = files.getOriginalFilename();
-        String fileName = new MD5Generator(originFileName).toString();
-        String contentType = files.getContentType();
-        String savePath = System.getProperty("user.dir") + "/ideaFiles";
+                if (!new File(savePath).exists()) {
+                    try {
+                        new File(savePath).mkdir();
+                    } catch (Exception e) {
+                        e.getStackTrace();
+                    }
+                }
+                String filePath = savePath + "/" + fileName;
+                file.transferTo(new File(filePath));
 
-        if (!new File(savePath).exists()) {
-            try{
-                new File(savePath).mkdir();
-            }
-            catch(Exception e){
-                e.getStackTrace();
+                UploadFile uploadFile = new UploadFile(idea, originFileName, fileName, contentType, filePath);
+                fileService.saveFile(uploadFile);
             }
         }
-        String filePath = savePath + "/" + fileName;
-        files.transferTo(new File(filePath));
-
-        UploadFile file = new UploadFile(originFileName, fileName, contentType, filePath);
-
-        Long saveFileId = fileService.saveFile(file);
-
-        Idea idea = new Idea(user, dto.getText(),dto.getDate(), dto.getTime(), saveFileId, ideaBoard);
-
-        Long saveId = IdeaService.saveIdea(idea);
         return new ResponseDTO.Create(saveId, true);
     }
 

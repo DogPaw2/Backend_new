@@ -2,10 +2,7 @@ package Dogpaw.domain;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 
 @Getter
@@ -13,9 +10,13 @@ import javax.persistence.Id;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @RequiredArgsConstructor
 public class UploadFile {
-    @Id @GeneratedValue
-    @Column(name = "File_ID")
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NonNull
+    @ManyToOne
+    @JoinColumn(name = "Idea_ID")
+    private Idea idea;
 
     @NonNull
     private String originName;
