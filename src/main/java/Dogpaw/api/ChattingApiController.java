@@ -1,12 +1,11 @@
 package Dogpaw.api;
 
-import Dogpaw.domain.ChatMapping;
-import Dogpaw.domain.Chatting;
-import Dogpaw.dto.ChattingDTO;
+import Dogpaw.domain.chatting.ChatMapping;
+import Dogpaw.domain.chatting.Chatting;
 import Dogpaw.dto.ResponseDTO;
-import Dogpaw.service.ChatService;
-import Dogpaw.service.ChattingService;
-import javassist.NotFoundException;
+import Dogpaw.service.chatting.ChatService;
+import Dogpaw.service.chatting.ChattingService;
+import Dogpaw.service.exception.exception;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +23,7 @@ public class ChattingApiController {
 
 
     @GetMapping("/chatting")
-    public ResponseDTO.ChattingResponse getChatting(@RequestParam Long chattingId) throws NotFoundException{
+    public ResponseDTO.ChattingResponse getChatting(@RequestParam Long chattingId) throws exception.DogpawNotFoundException{
         Chatting chatting = chattingService.findOne(chattingId);
         List<ChatMapping> chatList = chatService.getChatList(chattingId);
         return new ResponseDTO.ChattingResponse(true, chatting, chatList);

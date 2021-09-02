@@ -2,7 +2,7 @@ package Dogpaw.service;
 
 import Dogpaw.domain.UploadFile;
 import Dogpaw.repository.FileRepository;
-import javassist.NotFoundException;
+import Dogpaw.service.exception.exception;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,12 +16,12 @@ public class FileService {
     @NonNull
     private final FileRepository fileRepository;
 
-    public Long saveFile (UploadFile uploadFile) throws ArgumentNullException, InvalidArgumentException {
+    public Long saveFile (UploadFile uploadFile) throws exception.ArgumentNullException, exception.InvalidArgumentException {
         if(uploadFile == null){
-            throw new ArgumentNullException("file can't be null");
+            throw new exception.ArgumentNullException("file can't be null");
         }
         if(uploadFile.getOriginName().isEmpty() || uploadFile.getFileName().isEmpty() || uploadFile.getContentType().isEmpty() || uploadFile.getPath().isEmpty()){
-            throw new InvalidArgumentException("original file name or file name or content type or path is null");
+            throw new exception.InvalidArgumentException("original file name or file name or content type or path is null");
         }
         UploadFile save = fileRepository.save(uploadFile);
 
@@ -29,13 +29,13 @@ public class FileService {
 
     }
 
-    public UploadFile findOne(Long id) throws NotFoundException {
-        UploadFile uploadFile = fileRepository.findById(id).orElseThrow(() -> new fileNotFoundException("file with id : " + id + "is not valid"));
+    public UploadFile findOne(Long id) throws exception.DogpawNotFoundException {
+        UploadFile uploadFile = fileRepository.findById(id).orElseThrow(() -> new exception.DogpawNotFoundException("file with id : " + id + "is not valid"));
         return uploadFile;
     }
 
 
-    public void deleteByFileId(Long id) throws NotFoundException {
+    public void deleteByFileId(Long id) throws exception.DogpawNotFoundException {
 
         fileRepository.deleteById(id);
 
@@ -44,22 +44,5 @@ public class FileService {
     public UploadFile getFile(Long id){
         UploadFile uploadFile = fileRepository.getById(id);
         return uploadFile;
-    }
-
-
-    public static class fileNotFoundException extends NotFoundException {
-        public fileNotFoundException(String msg) {
-            super(msg);
-        }
-    }
-
-    public static class ArgumentNullException extends Throwable {
-        public ArgumentNullException(String s) {
-        }
-    }
-
-    public static class InvalidArgumentException extends Throwable {
-        public InvalidArgumentException(String s) {
-        }
     }
 }

@@ -1,12 +1,22 @@
 package Dogpaw.api;
 
 import Dogpaw.domain.*;
+import Dogpaw.domain.chatting.Chat;
+import Dogpaw.domain.chatting.ChatComment;
+import Dogpaw.domain.idea.Idea;
+import Dogpaw.domain.idea.IdeaComment;
+import Dogpaw.domain.message.Message;
+import Dogpaw.domain.message.MessageComment;
 import Dogpaw.dto.CommentDTO;
-import Dogpaw.dto.IdeaCommentDTO;
-import Dogpaw.dto.MessageCommentDTO;
 import Dogpaw.dto.ResponseDTO;
 import Dogpaw.service.*;
-import javassist.NotFoundException;
+import Dogpaw.service.chatting.ChatCommentService;
+import Dogpaw.service.chatting.ChatService;
+import Dogpaw.service.exception.exception;
+import Dogpaw.service.idea.IdeaCommentService;
+import Dogpaw.service.idea.IdeaService;
+import Dogpaw.service.message.MessageCommentService;
+import Dogpaw.service.message.MessageService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +46,7 @@ public class CommentApiController {
 
 
     @PostMapping("/chat/comment")
-    public ResponseDTO.Create createChatComment(@RequestBody CommentDTO.Create dto) throws NotFoundException, ChatCommentService.InvalidArgumentException, ChatCommentService.ArgumentNullException {
+    public ResponseDTO.Create createChatComment(@RequestBody CommentDTO.Create dto) throws exception.DogpawNotFoundException, exception.InvalidArgumentException, exception.ArgumentNullException {
         User user = userService.findOne(dto.getUserId());
         Chat chat = chatService.findOne(dto.getChatId());
 
@@ -50,7 +60,7 @@ public class CommentApiController {
     }
 
     @PostMapping("/idea/comment")
-    public ResponseDTO.Create createIdeaComment(@RequestBody CommentDTO.Create dto) throws NotFoundException, IdeaCommentService.InvalidArgumentException, IdeaCommentService.ArgumentNullException {
+    public ResponseDTO.Create createIdeaComment(@RequestBody CommentDTO.Create dto) throws exception.DogpawNotFoundException, exception.InvalidArgumentException, exception.ArgumentNullException {
         User user = userService.findOne(dto.getUserId());
         Idea idea = ideaService.findOne(dto.getIdeaId());
 
@@ -64,7 +74,7 @@ public class CommentApiController {
     }
 
     @PostMapping("/message/comment")
-    public ResponseDTO.Create createMessageComment(@RequestBody CommentDTO.Create dto) throws NotFoundException, MessageCommentService.InvalidArgumentException, MessageCommentService.ArgumentNullException {
+    public ResponseDTO.Create createMessageComment(@RequestBody CommentDTO.Create dto) throws exception.DogpawNotFoundException, exception.InvalidArgumentException, exception.ArgumentNullException {
         User user = userService.findOne(dto.getUserId());
         Message message = messageService.findOne(dto.getMessageId());
 
@@ -79,19 +89,19 @@ public class CommentApiController {
 
 
     @DeleteMapping("/chat/comment")
-    public ResponseDTO.Delete deleteChatComment(@RequestBody CommentDTO.Delete dto) throws NotFoundException {
+    public ResponseDTO.Delete deleteChatComment(@RequestBody CommentDTO.Delete dto) throws exception.DogpawNotFoundException {
         chatCommentService.deleteByCommentId(dto.getId());
         return new ResponseDTO.Delete(true);
     }
 
     @DeleteMapping("/idea/comment")
-    public ResponseDTO.Delete deleteIdeaComment(@RequestBody CommentDTO.Delete dto) throws NotFoundException {
+    public ResponseDTO.Delete deleteIdeaComment(@RequestBody CommentDTO.Delete dto) throws exception.DogpawNotFoundException {
         ideaCommentService.deleteByCommentId(dto.getId());
         return new ResponseDTO.Delete(true);
     }
 
     @DeleteMapping("/message/comment")
-    public ResponseDTO.Delete deleteMessageComment(@RequestBody CommentDTO.Delete dto) throws NotFoundException {
+    public ResponseDTO.Delete deleteMessageComment(@RequestBody CommentDTO.Delete dto) throws exception.DogpawNotFoundException {
         messageCommentService.deleteByCommentId(dto.getId());
         return new ResponseDTO.Delete(true);
     }

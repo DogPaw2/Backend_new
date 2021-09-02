@@ -1,11 +1,10 @@
 package Dogpaw.api;
 
 import Dogpaw.domain.User;
-import Dogpaw.dto.ChatDTO;
 import Dogpaw.dto.ResponseDTO;
 import Dogpaw.dto.UserDTO;
 import Dogpaw.service.UserService;
-import javassist.NotFoundException;
+import Dogpaw.service.exception.exception;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +18,7 @@ public class UserApiController {
     private final UserService userService;
 
     @PostMapping("/user")
-    public ResponseDTO.Create createUser(@RequestBody UserDTO.Create dto) throws UserService.InvalidArgumentException, UserService.ArgumentNullException {
+    public ResponseDTO.Create createUser(@RequestBody UserDTO.Create dto) throws exception.InvalidArgumentException, exception.ArgumentNullException {
         User user = new User(dto.getName());
         Long saveId = userService.saveUser(user);
 
@@ -27,7 +26,7 @@ public class UserApiController {
     }
 
     @DeleteMapping("/user")
-    public ResponseDTO.Delete createChat(@RequestBody UserDTO.Delete dto) throws NotFoundException {
+    public ResponseDTO.Delete createChat(@RequestBody UserDTO.Delete dto) throws exception.DogpawNotFoundException {
         userService.deleteByUserId(dto.getId());
         return new ResponseDTO.Delete(true);
     }

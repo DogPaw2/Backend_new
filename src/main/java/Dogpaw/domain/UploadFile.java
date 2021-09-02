@@ -1,5 +1,6 @@
 package Dogpaw.domain;
 
+import Dogpaw.domain.idea.Idea;
 import lombok.*;
 
 import javax.persistence.*;

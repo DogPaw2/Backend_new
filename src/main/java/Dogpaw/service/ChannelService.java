@@ -4,7 +4,7 @@ import Dogpaw.domain.*;
 import Dogpaw.repository.ChannelRepository;
 import Dogpaw.repository.UserChannelRepository;
 import Dogpaw.repository.UserRepository;
-import javassist.NotFoundException;
+import Dogpaw.service.exception.exception;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,12 +35,12 @@ public class ChannelService {
 
     }
 
-    public Long saveChannel (Channel channel, Long userId) throws ArgumentNullException, InvalidArgumentException, UserService.UserNotFoundException {
+    public Long saveChannel (Channel channel, Long userId) throws exception.ArgumentNullException, exception.InvalidArgumentException, exception.DogpawNotFoundException {
         if(channel == null){
-            throw new ArgumentNullException("Channel can't be null");
+            throw new exception.ArgumentNullException("Channel can't be null");
         }
         if(channel.getName().isEmpty() || channel.getPurpose().isEmpty()){
-            throw new InvalidArgumentException("Channel Id or URl is null");
+            throw new exception.InvalidArgumentException("Channel Id or URl is null");
         }
         Channel save = channelRepository.save(channel);
         addUser(userId, channel.getId());
@@ -49,39 +49,18 @@ public class ChannelService {
 
     }
 
-    public Channel findOne(Long id) throws NotFoundException {
-        Channel channel = channelRepository.findById(id).orElseThrow(() -> new ChannelNotFoundException("Channel with id : " + id + "is not valid"));
+    public Channel findOne(Long id) throws exception.DogpawNotFoundException {
+        Channel channel = channelRepository.findById(id).orElseThrow(() -> new exception.DogpawNotFoundException("Channel with id : " + id + "is not valid"));
         return channel;
     }
 
-    public List<UserChannelMapping> getChannelList(Long id) throws NotFoundException{
+    public List<UserChannelMapping> getChannelList(Long id) throws exception.DogpawNotFoundException{
         User user = userRepository.findById(id).get();
         return userChannelRepository.findAllByUser(user);
     }
 
-
-
-
-
-    public void deleteByChannelId(Long id) throws NotFoundException {
+    public void deleteByChannelId(Long id) throws exception.DogpawNotFoundException {
         channelRepository.deleteById(id);
     }
 
-
-
-    public static class ChannelNotFoundException extends NotFoundException {
-        public ChannelNotFoundException(String msg) {
-            super(msg);
-        }
-    }
-
-    public static class ArgumentNullException extends Throwable {
-        public ArgumentNullException(String s) {
-        }
-    }
-
-    public static class InvalidArgumentException extends Throwable {
-        public InvalidArgumentException(String s) {
-        }
-    }
 }

@@ -1,5 +1,7 @@
 package Dogpaw.domain;
 
+import Dogpaw.domain.chatting.Chatting;
+import Dogpaw.domain.idea.IdeaBoard;
 import lombok.*;
 
 import javax.persistence.*;

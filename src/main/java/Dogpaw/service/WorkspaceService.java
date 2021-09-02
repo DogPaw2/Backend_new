@@ -1,14 +1,16 @@
 package Dogpaw.service;
 
 import Dogpaw.domain.*;
-import Dogpaw.repository.UserChannelRepository;
+import Dogpaw.domain.chatting.Chatting;
+import Dogpaw.domain.idea.IdeaBoard;
 import Dogpaw.repository.UserRepository;
 import Dogpaw.repository.UserWorkspaceRepository;
 import Dogpaw.repository.WorkspaceRepository;
-import javassist.NotFoundException;
+import Dogpaw.service.chatting.ChattingService;
+import Dogpaw.service.exception.exception;
+import Dogpaw.service.idea.IdeaBoardService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.jdbc.Work;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,14 +45,14 @@ public class WorkspaceService {
 
     }
 
-    public Long saveWorkSpace (Workspace workspace, Long userId) throws ArgumentNullException, InvalidArgumentException, ChattingService.InvalidArgumentException, ChattingService.ArgumentNullException, IdeaBoardService.InvalidArgumentException, IdeaBoardService.ArgumentNullException, UserService.UserNotFoundException, ChannelService.ArgumentNullException, ChannelService.InvalidArgumentException {
+    public Long saveWorkSpace (Workspace workspace, Long userId) throws exception.ArgumentNullException, exception.InvalidArgumentException, exception.DogpawNotFoundException {
         //fail fast pattern
         //if Argument is invalid, dont do any logic
         if(workspace == null){
-            throw new ArgumentNullException("WorkSpace can't be null");
+            throw new exception.ArgumentNullException("WorkSpace can't be null");
         }
         if(workspace.getName().isEmpty() || workspace.getUrl().isEmpty()){
-            throw new InvalidArgumentException("Work Space Id or URl is null");
+            throw new exception.InvalidArgumentException("Work Space Id or URl is null");
         }
         Chatting chatting = new Chatting();
         IdeaBoard ideaBoard = new IdeaBoard();
@@ -67,43 +69,27 @@ public class WorkspaceService {
 
     }
 
-    public Workspace findOne(Long id) throws NotFoundException {
-        Workspace workspace = workspaceRepository.findById(id).orElseThrow(() -> new WorkSpaceNotFoundException("Work space with id : " + id + "is not valid"));
+    public Workspace findOne(Long id) throws exception.DogpawNotFoundException {
+        Workspace workspace = workspaceRepository.findById(id).orElseThrow(() -> new exception.DogpawNotFoundException("Work space with id : " + id + "is not valid"));
         return workspace;
     }
 
-    public boolean findByUrl(String url) throws NotFoundException {
+    public boolean findByUrl(String url) throws exception.DogpawNotFoundException {
         Workspace workspace = workspaceRepository.findByUrl(url);
         return workspace != null;
     }
 
 
 
-    public void deleteByWorkSpaceId(Long id) throws NotFoundException {
+    public void deleteByWorkSpaceId(Long id) throws exception.DogpawNotFoundException {
 
         workspaceRepository.deleteById(id);
 
     }
 
-    public List<UserWorkspace> getWorkspaceList(Long id) throws NotFoundException{
+    public List<UserWorkspace> getWorkspaceList(Long id) throws exception.DogpawNotFoundException{
         User user = userRepository.findById(id).get();
         return userWorkspaceRepository.findAllByUser(user);
     }
 
-
-    public static class WorkSpaceNotFoundException extends NotFoundException {
-        public WorkSpaceNotFoundException(String msg) {
-            super(msg);
-        }
-    }
-
-    public static class ArgumentNullException extends Throwable {
-        public ArgumentNullException(String s) {
-        }
-    }
-
-    public static class InvalidArgumentException extends Throwable {
-        public InvalidArgumentException(String s) {
-        }
-    }
 }

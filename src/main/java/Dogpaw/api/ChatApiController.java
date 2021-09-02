@@ -1,14 +1,14 @@
 package Dogpaw.api;
 
-import Dogpaw.domain.Chat;
-import Dogpaw.domain.Chatting;
+import Dogpaw.domain.chatting.Chat;
+import Dogpaw.domain.chatting.Chatting;
 import Dogpaw.domain.User;
-import Dogpaw.dto.ChatDTO;
+import Dogpaw.dto.chatting.ChatDTO;
 import Dogpaw.dto.ResponseDTO;
-import Dogpaw.service.ChatService;
-import Dogpaw.service.ChattingService;
 import Dogpaw.service.UserService;
-import javassist.NotFoundException;
+import Dogpaw.service.chatting.ChatService;
+import Dogpaw.service.chatting.ChattingService;
+import Dogpaw.service.exception.exception;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +28,7 @@ public class ChatApiController {
 
 
     @PostMapping("/chat")
-    public ResponseDTO.Create createChat(@RequestBody ChatDTO.Create dto) throws ChatService.ArgumentNullException, ChatService.InvalidArgumentException, NotFoundException {
+    public ResponseDTO.Create createChat(@RequestBody ChatDTO.Create dto) throws exception.ArgumentNullException, exception.InvalidArgumentException, exception.DogpawNotFoundException {
         Chatting chatting = chattingService.findOne(dto.getChattingId());
         User user = userService.findOne(dto.getUserId());
         LocalDate date = LocalDate.now();
@@ -42,7 +42,7 @@ public class ChatApiController {
 
 
     @DeleteMapping("/chat")
-    public ResponseDTO.Delete createChat(@RequestBody ChatDTO.Delete dto) throws NotFoundException {
+    public ResponseDTO.Delete createChat(@RequestBody ChatDTO.Delete dto) throws exception.DogpawNotFoundException {
         chatService.deleteByChatId(dto.getId());
         return new ResponseDTO.Delete(true);
     }

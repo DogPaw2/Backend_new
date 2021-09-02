@@ -1,13 +1,16 @@
 package Dogpaw.dto;
 
 import Dogpaw.domain.*;
+import Dogpaw.domain.chatting.ChatMapping;
+import Dogpaw.domain.chatting.Chatting;
+import Dogpaw.domain.idea.IdeaBoard;
+import Dogpaw.domain.idea.IdeaMapping;
+import Dogpaw.domain.message.MessageMapping;
+import Dogpaw.domain.message.MessageRoom;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 
 import java.util.List;
 

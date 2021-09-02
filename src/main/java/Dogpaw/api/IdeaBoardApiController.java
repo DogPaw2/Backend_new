@@ -1,12 +1,12 @@
 package Dogpaw.api;
 
-import Dogpaw.domain.IdeaMapping;
-import Dogpaw.domain.IdeaBoard;
-import Dogpaw.dto.IdeaBoardDTO;
+import Dogpaw.domain.idea.IdeaMapping;
+import Dogpaw.domain.idea.IdeaBoard;
+import Dogpaw.dto.idea.IdeaBoardDTO;
 import Dogpaw.dto.ResponseDTO;
-import Dogpaw.service.IdeaService;
-import Dogpaw.service.IdeaBoardService;
-import javassist.NotFoundException;
+import Dogpaw.service.exception.exception;
+import Dogpaw.service.idea.IdeaService;
+import Dogpaw.service.idea.IdeaBoardService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +24,7 @@ public class IdeaBoardApiController {
 
 
     @GetMapping("/ideaBoard")
-    public ResponseDTO.IdeaBoardResponse getIdeaBoard(@RequestBody IdeaBoardDTO.Get dto) throws NotFoundException{
+    public ResponseDTO.IdeaBoardResponse getIdeaBoard(@RequestBody IdeaBoardDTO.Get dto) throws exception.DogpawNotFoundException{
         IdeaBoard IdeaBoard = IdeaBoardService.findOne(dto.getId());
         List<IdeaMapping> IdeaList = IdeaService.getIdeaList(dto.getId());
         return new ResponseDTO.IdeaBoardResponse(true, IdeaBoard, IdeaList);

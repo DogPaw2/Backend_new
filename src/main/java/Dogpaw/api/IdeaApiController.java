@@ -1,17 +1,17 @@
 package Dogpaw.api;
 
-import Dogpaw.domain.Idea;
-import Dogpaw.domain.IdeaBoard;
+import Dogpaw.domain.idea.Idea;
+import Dogpaw.domain.idea.IdeaBoard;
 import Dogpaw.domain.User;
 import Dogpaw.domain.UploadFile;
-import Dogpaw.dto.IdeaDTO;
+import Dogpaw.dto.idea.IdeaDTO;
 import Dogpaw.dto.ResponseDTO;
 import Dogpaw.service.FileService;
-import Dogpaw.service.IdeaService;
-import Dogpaw.service.IdeaBoardService;
+import Dogpaw.service.exception.exception;
+import Dogpaw.service.idea.IdeaService;
+import Dogpaw.service.idea.IdeaBoardService;
 import Dogpaw.service.UserService;
 import Dogpaw.util.MD5Generator;
-import javassist.NotFoundException;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
@@ -28,8 +28,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -44,7 +42,7 @@ public class IdeaApiController {
 
 
     @PostMapping("/idea")
-    public ResponseDTO.Create createIdea(@RequestPart(value = "dto") IdeaDTO.Create dto, @RequestPart(value = "files") MultipartFile[] files) throws IdeaService.ArgumentNullException, IdeaService.InvalidArgumentException, NotFoundException, FileService.ArgumentNullException, FileService.InvalidArgumentException, IOException, NoSuchAlgorithmException {
+    public ResponseDTO.Create createIdea(@RequestPart(value = "dto") IdeaDTO.Create dto, @RequestPart(value = "files") MultipartFile[] files) throws IOException, NoSuchAlgorithmException, exception.DogpawNotFoundException, exception.InvalidArgumentException, exception.ArgumentNullException {
         IdeaBoard ideaBoard = IdeaBoardService.findOne(dto.getIdeaBoardId());
         User user = userService.findOne(dto.getUserId());
         Idea idea = new Idea(user, dto.getText(), dto.getDate(), dto.getTime(), ideaBoard);
@@ -88,7 +86,7 @@ public class IdeaApiController {
 
 
     @DeleteMapping("/idea")
-    public ResponseDTO.Delete createIdea(@RequestBody IdeaDTO.Delete dto) throws NotFoundException {
+    public ResponseDTO.Delete createIdea(@RequestBody IdeaDTO.Delete dto) throws exception.DogpawNotFoundException {
         IdeaService.deleteByIdeaId(dto.getId());
         return new ResponseDTO.Delete(true);
     }

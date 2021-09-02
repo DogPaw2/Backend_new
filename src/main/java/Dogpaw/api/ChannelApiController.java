@@ -2,15 +2,17 @@ package Dogpaw.api;
 
 
 import Dogpaw.domain.*;
+import Dogpaw.domain.chatting.Chatting;
+import Dogpaw.domain.idea.IdeaBoard;
 import Dogpaw.dto.ChannelDTO;
 import Dogpaw.dto.ResponseDTO;
 import Dogpaw.service.*;
-import javassist.NotFoundException;
+import Dogpaw.service.chatting.ChattingService;
+import Dogpaw.service.exception.exception;
+import Dogpaw.service.idea.IdeaBoardService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,7 +29,7 @@ public class ChannelApiController {
     private final WorkspaceService workspaceService;
 
     @PostMapping("/channel")
-    public ResponseDTO.Create createChannel(@RequestBody ChannelDTO.Create dto) throws ChannelService.InvalidArgumentException, ChannelService.ArgumentNullException, ChattingService.InvalidArgumentException, ChattingService.ArgumentNullException, IdeaBoardService.ArgumentNullException, IdeaBoardService.InvalidArgumentException, NotFoundException {
+    public ResponseDTO.Create createChannel(@RequestBody ChannelDTO.Create dto) throws exception.InvalidArgumentException, exception.ArgumentNullException, exception.DogpawNotFoundException {
 
         Chatting chatting = new Chatting();
         IdeaBoard ideaBoard = new IdeaBoard();
@@ -44,7 +46,7 @@ public class ChannelApiController {
     }
 
     @DeleteMapping("/channel")
-    public ResponseDTO.Delete deleteChannel(@RequestBody ChannelDTO.Delete dto) throws NotFoundException {
+    public ResponseDTO.Delete deleteChannel(@RequestBody ChannelDTO.Delete dto) throws exception.DogpawNotFoundException {
         channelService.deleteByChannelId(dto.getId());
         chattingService.deleteByChattingId(dto.getId());
         ideaBoardService.deleteByIdeaBoardId(dto.getId());
@@ -53,7 +55,7 @@ public class ChannelApiController {
     }
 
     @GetMapping("/channel")
-    public ResponseDTO.ChannelResponse getChannel(@RequestParam Long channelId) throws NotFoundException{
+    public ResponseDTO.ChannelResponse getChannel(@RequestParam Long channelId) throws exception.DogpawNotFoundException{
         Channel channel = channelService.findOne(channelId);
         return new ResponseDTO.ChannelResponse(true, channel);
 
