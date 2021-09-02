@@ -10,7 +10,7 @@ import java.util.List;
 public class ChannelDTO {
     @Data
     public static class Create extends Update {
-
+        private Long workspaceId;
     }
 
     @Data

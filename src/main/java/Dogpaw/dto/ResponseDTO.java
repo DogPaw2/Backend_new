@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 
 import java.util.List;
 
@@ -26,6 +29,7 @@ public class ResponseDTO {
             this.id = id;
         }
     }
+
 
     // ** 업데이트 추가 **
     public static class Update extends BaseResponse {
@@ -51,7 +55,7 @@ public class ResponseDTO {
     @AllArgsConstructor
     public static class ChannelResponse {
         Boolean success;
-        private List<UserChannelMapping> channelList;
+        private Channel channel;
     }
 
     @Data
@@ -68,6 +72,28 @@ public class ResponseDTO {
         Boolean success;
         private IdeaBoard ideaBoard;
         private List<IdeaMapping> ideas;
+    }
+
+    @Data
+    @AllArgsConstructor
+    public static class WorkspaceAllResponse{
+        Boolean success;
+        private List<UserWorkspace> workspaceList;
+    }
+
+    @Data
+    @AllArgsConstructor
+    public static class WorkspaceResponse{
+        Boolean success;
+        private Workspace workspace;
+    }
+
+    @Data
+    @AllArgsConstructor
+    public static class FileResponse{
+        Boolean success;
+        private HttpHeaders headers;
+        private Resource body;
     }
 
 }

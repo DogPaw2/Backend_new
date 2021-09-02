@@ -12,6 +12,10 @@ public class IdeaDTO {
         private Long userId;
         private Long ideaBoardId;
     }
+    @Data
+    public static class Get {
+        private Long fileId;
+    }
 
     @Data
     public static class Update {
@@ -19,6 +23,8 @@ public class IdeaDTO {
         private LocalDate date;
         private LocalTime time;
     }
+
+
 
     @Data
     public static class Delete {

@@ -6,17 +6,14 @@ import lombok.Data;
 public class FileDTO {
 
     @Data
-    public static class Create extends FileDTO.Update {
-
-    }
-
-    @Data
-    public static class Update {
+    public static class Create{
+        private String originName;
 
         private String fileName;
 
         private String contentType;
 
+        private String path;
     }
 
     @Data

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -40,6 +41,11 @@ public class IdeaService {
 
     public void deleteByIdeaId(Long id) throws NotFoundException{
         ideaRepository.deleteById(id);
+    }
+
+    public Optional<Idea> checkIdea(Long id) {
+        Optional<Idea> idea = ideaRepository.findById(id);
+        return idea;
     }
 
     public Idea findOne(Long id) throws NotFoundException{

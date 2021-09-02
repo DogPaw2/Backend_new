@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -32,6 +33,11 @@ public class MessageService {
         Message save = messageRepository.save(message);
 
         return save.getId();
+    }
+
+    public Optional<Message> checkMessage(Long id) {
+        Optional<Message> message = messageRepository.findById(id);
+        return message;
     }
 
     public Message findOne(Long id) throws NotFoundException {

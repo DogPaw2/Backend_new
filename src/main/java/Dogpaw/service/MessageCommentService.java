@@ -1,40 +1,35 @@
 package Dogpaw.service;
 
 
-import Dogpaw.domain.Chat;
-import Dogpaw.domain.ChatMapping;
-import Dogpaw.domain.Chatting;
-import Dogpaw.domain.Comment;
-import Dogpaw.repository.ChatRepository;
-import Dogpaw.repository.ChattingRepository;
-import Dogpaw.repository.CommentRepository;
+import Dogpaw.domain.Message;
+import Dogpaw.domain.MessageComment;
+import Dogpaw.repository.MessageRepository;
+import Dogpaw.repository.MessageCommentRepository;
 import javassist.NotFoundException;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class CommentService {
+public class MessageCommentService {
     @NonNull
-    private final ChatRepository chatRepository;
+    private final MessageRepository messageRepository;
     @NonNull
-    private final CommentRepository commentRepository;
+    private final MessageCommentRepository commentRepository;
 
-    public Long saveComment (Comment comment) throws ArgumentNullException, InvalidArgumentException {
+    public Long saveComment (MessageComment comment) throws ArgumentNullException, InvalidArgumentException {
         if(comment == null){
-            throw new ArgumentNullException("Chat can't be null");
+            throw new ArgumentNullException("Comment can't be null");
         }
         if(comment.getText().isEmpty()){
-            throw new InvalidArgumentException("Chatting text is null");
+            throw new InvalidArgumentException("Comment text is null");
         }
-        comment.getChat().getComments().add(comment);
-        Comment save = commentRepository.save(comment);
-
+        comment.getMessage().getComments().add(comment);
+        MessageComment save = commentRepository.save(comment);
 
         return save.getId();
     }
@@ -43,11 +38,10 @@ public class CommentService {
         commentRepository.deleteById(id);
     }
 
-    public Comment findOne(Long id) throws NotFoundException{
-        Comment comment = commentRepository.findById(id).orElseThrow(() -> new CommentNotFoundException("Comment with id : " + id + "is not valid"));
+    public MessageComment findOne(Long id) throws NotFoundException{
+        MessageComment comment = commentRepository.findById(id).orElseThrow(() -> new CommentNotFoundException("Comment with id : " + id + "is not valid"));
         return comment;
     }
-
 
 
     // exception

@@ -1,6 +1,5 @@
 package Dogpaw.domain;
 
-
 import lombok.*;
 
 import javax.persistence.*;
@@ -8,8 +7,10 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
-@Setter
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @RequiredArgsConstructor
 public class Comment {
@@ -20,19 +21,14 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     @NonNull
-    private User user;
+    protected User user;
 
     @NonNull
-    private String text;
+    protected String text;
 
     @NonNull
-    private LocalDate date;
-    @NonNull
-    private LocalTime time;
+    protected LocalDate date;
 
     @NonNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CHAT_ID")
-    private Chat chat;
-
+    protected LocalTime time;
 }

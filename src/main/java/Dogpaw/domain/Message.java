@@ -23,12 +23,11 @@ public class Message {
     @NonNull
     private String text;
 
-
     @NonNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MESSEAGE_ID")
     private MessageRoom messageRoom;
 
-    @OneToMany(mappedBy = "message",  cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Comment2> comments2 = new ArrayList<>();
+    @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<MessageComment> comments = new ArrayList<>();
 }
