@@ -15,7 +15,7 @@ public class UploadFile {
 
     @NonNull
     @ManyToOne
-    @JoinColumn(name = "Idea_ID")
+    @JoinColumn(name = "IDEA_ID")
     private Idea idea;
 
     @NonNull

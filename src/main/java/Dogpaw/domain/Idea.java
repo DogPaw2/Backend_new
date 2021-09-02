@@ -17,7 +17,7 @@ import java.util.List;
 public class Idea {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Idea_ID")
+    @Column(name = "IDEA_ID")
     private Long id;
 
     @ManyToOne
@@ -39,9 +39,9 @@ public class Idea {
 
     @NonNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "IdeaBoard_ID")
+    @JoinColumn(name = "IDEABOARD_ID")
     private IdeaBoard ideaBoard;
 
     @OneToMany(mappedBy = "idea",  cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Comment> comments = new ArrayList<>();
+    private List<IdeaComment> comments = new ArrayList<>();
 }
