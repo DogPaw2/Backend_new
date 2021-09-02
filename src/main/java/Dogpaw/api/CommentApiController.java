@@ -79,7 +79,7 @@ public class CommentApiController {
 
 
     @DeleteMapping("/chat/comment")
-    public ResponseDTO.Delete deletChatComment(@RequestBody CommentDTO.Delete dto) throws NotFoundException {
+    public ResponseDTO.Delete deleteChatComment(@RequestBody CommentDTO.Delete dto) throws NotFoundException {
         chatCommentService.deleteByCommentId(dto.getId());
         return new ResponseDTO.Delete(true);
     }

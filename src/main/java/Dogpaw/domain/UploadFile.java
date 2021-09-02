@@ -13,6 +13,7 @@ public class UploadFile {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Getter(AccessLevel.NONE)
     @NonNull
     @ManyToOne
     @JoinColumn(name = "IDEA_ID")
