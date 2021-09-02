@@ -39,9 +39,9 @@ public class MessageRoomApiController {
     }
 
     @GetMapping("/messageroom")
-    public ResponseDTO.MessageRoomResponse getMessageRoom(@RequestBody MessageRoomDTO.Get dto) throws NotFoundException {
-        List<MessageMapping> messageList = messageService.getMessageList(dto.getId());
-        MessageRoom messageRoom = messageRoomService.findOne(dto.getId());
+    public ResponseDTO.MessageRoomResponse getMessageRoom(@RequestParam Long messageRoomId) throws NotFoundException {
+        MessageRoom messageRoom = messageRoomService.findOne(messageRoomId);
+        List<MessageMapping> messageList = messageService.getMessageList(messageRoomId);
         return new ResponseDTO.MessageRoomResponse(true, messageList, messageRoom);
     }
 
