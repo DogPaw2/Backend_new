@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Mail Send ###
+src/main/resources/application.yml
