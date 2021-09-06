@@ -23,7 +23,7 @@ public class Channel {
     private String purpose;
 
     @Getter(AccessLevel.NONE)
-    @OneToMany(mappedBy = "channel")
+    @OneToMany(mappedBy = "channel",  cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserChannel> users = new ArrayList<>();
 
     @NonNull
@@ -35,4 +35,11 @@ public class Channel {
     @OneToOne
     @JoinColumn(name = "IdeaBoard_ID")
     private IdeaBoard ideaBoard;
+
+    @NonNull
+    @Getter(AccessLevel.NONE)
+    @ManyToOne
+    @JoinColumn(name = "workspace_id")
+    private Workspace workspace;
+
 }

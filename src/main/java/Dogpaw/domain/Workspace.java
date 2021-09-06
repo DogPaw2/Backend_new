@@ -25,10 +25,9 @@ public class Workspace {
     private String url;
 
     @Getter(AccessLevel.NONE)
-    @OneToMany(mappedBy = "workspace")
+    @OneToMany(mappedBy = "workspace", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserWorkspace> users = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="channel_id")
+    @OneToMany(mappedBy = "workspace", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Channel> channels = new ArrayList<>();
 }

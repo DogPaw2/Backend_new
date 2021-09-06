@@ -35,21 +35,22 @@ public class ChannelApiController {
         IdeaBoard ideaBoard = new IdeaBoard();
         Long saveId2 = chattingService.saveChatting(chatting);
         Long saveId3 = ideaBoardService.saveIdeaBoard(ideaBoard);
+        Workspace workspace = workspaceService.findOne(dto.getWorkspaceId());
 
-        Channel channel = new Channel(dto.getName(), dto.getPurpose(),chatting, ideaBoard);
+        Channel channel = new Channel(dto.getName(), dto.getPurpose(),chatting, ideaBoard, workspace);
 
         Long saveId = channelService.saveChannel(channel, dto.getUserId());
 
-        Workspace workspace = workspaceService.findOne(dto.getWorkspaceId());
-        workspace.getChannels().add(channel);
+        workspaceService.addChannel(dto.getWorkspaceId(), channel);
+
         return new ResponseDTO.Create(saveId, true);
     }
 
     @DeleteMapping("/channel")
-    public ResponseDTO.Delete deleteChannel(@RequestBody ChannelDTO.Delete dto) throws exception.DogpawNotFoundException {
-        channelService.deleteByChannelId(dto.getId());
-        chattingService.deleteByChattingId(dto.getId());
-        ideaBoardService.deleteByIdeaBoardId(dto.getId());
+    public ResponseDTO.Delete deleteChannel(@RequestParam Long id) throws exception.DogpawNotFoundException {
+        channelService.deleteByChannelId(id);
+        chattingService.deleteByChattingId(id);
+        ideaBoardService.deleteByIdeaBoardId(id);
 
         return new ResponseDTO.Delete(true);
     }
