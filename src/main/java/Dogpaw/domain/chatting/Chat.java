@@ -18,6 +18,7 @@ import java.util.List;
 public class Chat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "CHAT_ID")
     private Long id;
 
     @ManyToOne
@@ -30,8 +31,12 @@ public class Chat {
 
     @NonNull
     private LocalDate date;
+
     @NonNull
     private LocalTime time;
+
+    @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<ChatFile> fileList = new ArrayList<>();
 
     @NonNull
     @ManyToOne(fetch = FetchType.LAZY)

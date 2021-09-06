@@ -1,4 +1,4 @@
-package Dogpaw.api;
+package Dogpaw.api.message;
 
 import Dogpaw.domain.message.MessageMapping;
 import Dogpaw.domain.message.MessageRoom;
