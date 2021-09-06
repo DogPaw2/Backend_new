@@ -35,5 +35,4 @@ public class Channel {
     @OneToOne
     @JoinColumn(name = "IdeaBoard_ID")
     private IdeaBoard ideaBoard;
-
 }

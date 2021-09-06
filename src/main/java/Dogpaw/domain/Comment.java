@@ -16,6 +16,7 @@ import java.time.LocalTime;
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "COMMENT_ID")
     private Long id;
 
     @ManyToOne
