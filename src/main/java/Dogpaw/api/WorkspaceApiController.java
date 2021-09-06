@@ -38,8 +38,8 @@ public class WorkspaceApiController {
     }
 
     @DeleteMapping("/workspace")
-    public ResponseDTO.Delete deleteWorkspace(@RequestBody WorkSpaceDTO.Delete dto) throws exception.DogpawNotFoundException {
-        workspaceService.deleteByWorkSpaceId(dto.getId());
+    public ResponseDTO.Delete deleteWorkspace(@RequestParam Long id) throws exception.DogpawNotFoundException {
+        workspaceService.deleteByWorkSpaceId(id);
         return new ResponseDTO.Delete(true);
     }
 

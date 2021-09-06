@@ -42,8 +42,8 @@ public class ChatApiController {
 
 
     @DeleteMapping("/chat")
-    public ResponseDTO.Delete createChat(@RequestBody ChatDTO.Delete dto) throws exception.DogpawNotFoundException {
-        chatService.deleteByChatId(dto.getId());
+    public ResponseDTO.Delete createChat(@RequestParam Long id) throws exception.DogpawNotFoundException {
+        chatService.deleteByChatId(id);
         return new ResponseDTO.Delete(true);
     }
 }

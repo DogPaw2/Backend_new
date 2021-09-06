@@ -2,7 +2,6 @@ package Dogpaw.api.idea;
 
 import Dogpaw.domain.idea.IdeaMapping;
 import Dogpaw.domain.idea.IdeaBoard;
-import Dogpaw.dto.idea.IdeaBoardDTO;
 import Dogpaw.dto.ResponseDTO;
 import Dogpaw.service.exception.exception;
 import Dogpaw.service.idea.IdeaService;
@@ -24,11 +23,9 @@ public class IdeaBoardApiController {
 
 
     @GetMapping("/ideaBoard")
-    public ResponseDTO.IdeaBoardResponse getIdeaBoard(@RequestBody IdeaBoardDTO.Get dto) throws exception.DogpawNotFoundException{
-        IdeaBoard IdeaBoard = IdeaBoardService.findOne(dto.getId());
-        List<IdeaMapping> IdeaList = IdeaService.getIdeaList(dto.getId());
+    public ResponseDTO.IdeaBoardResponse getIdeaBoard(@RequestParam Long id) throws exception.DogpawNotFoundException{
+        IdeaBoard IdeaBoard = IdeaBoardService.findOne(id);
+        List<IdeaMapping> IdeaList = IdeaService.getIdeaList(id);
         return new ResponseDTO.IdeaBoardResponse(true, IdeaBoard, IdeaList);
-
     }
-
 }

@@ -1,6 +1,5 @@
 package Dogpaw.domain.idea;
 
-import Dogpaw.domain.UploadFile;
 import Dogpaw.domain.User;
 import lombok.*;
 
@@ -37,7 +36,7 @@ public class Idea {
     private LocalTime time;
 
     @OneToMany(mappedBy = "idea", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<UploadFile> fileList = new ArrayList<>();
+    private List<IdeaFile> fileList = new ArrayList<>();
 
     @NonNull
     @ManyToOne(fetch = FetchType.LAZY)

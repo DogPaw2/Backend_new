@@ -18,6 +18,11 @@ public class MessageDTO {
     }
 
     @Data
+    public static class Get {
+        private Long fileId;
+    }
+
+    @Data
     public static class Delete {
         private Long id;
     }

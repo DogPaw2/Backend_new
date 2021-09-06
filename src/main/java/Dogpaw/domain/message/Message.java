@@ -23,6 +23,9 @@ public class Message {
     @NonNull
     private String text;
 
+    @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<MessageFile> fileList = new ArrayList<>();
+
     @NonNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MESSEAGE_ID")

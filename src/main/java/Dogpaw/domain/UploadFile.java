@@ -1,6 +1,5 @@
 package Dogpaw.domain;
 
-import Dogpaw.domain.idea.Idea;
 import lombok.*;
 
 import javax.persistence.*;
@@ -8,17 +7,13 @@ import javax.persistence.*;
 
 @Getter
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @RequiredArgsConstructor
 public class UploadFile {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Getter(AccessLevel.NONE)
-    @NonNull
-    @ManyToOne
-    @JoinColumn(name = "IDEA_ID")
-    private Idea idea;
 
     @NonNull
     private String originName;
@@ -28,6 +23,9 @@ public class UploadFile {
 
     @NonNull
     private String contentType;
+
+    @NonNull
+    private long fileSize;
 
     @NonNull
     private String path;

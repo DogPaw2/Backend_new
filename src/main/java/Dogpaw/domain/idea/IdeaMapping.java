@@ -1,5 +1,6 @@
 package Dogpaw.domain.idea;
 
+import Dogpaw.domain.CommentMapping;
 import Dogpaw.domain.UploadFile;
 import Dogpaw.domain.User;
 
@@ -13,4 +14,5 @@ public interface IdeaMapping {
     LocalDate getDate();
     LocalTime getTime();
     List<UploadFile> getFileList();
+    List<CommentMapping> getComments();
 }
