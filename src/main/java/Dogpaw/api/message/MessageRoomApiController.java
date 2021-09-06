@@ -43,5 +43,5 @@ public class MessageRoomApiController {
         MessageRoom messageRoom = messageRoomService.findOne(messageRoomId);
         List<MessageMapping> messageList = messageService.getMessageList(messageRoomId);
         return new ResponseDTO.MessageRoomResponse(true, messageList, messageRoom);
-
+    }
 }
