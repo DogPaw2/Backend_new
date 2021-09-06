@@ -34,9 +34,9 @@ public class WorkspaceService {
     @NonNull
     private final ChannelService channelService;
 
-    public void addUser(Long userId, Long channelId){
-        Workspace workspace = workspaceRepository.findById(channelId).get();
-        User user = userRepository.findById(userId).get();
+    public void addUser(Long userId, Long channelId) throws exception.DogpawNotFoundException {
+        Workspace workspace = workspaceRepository.findById(channelId).orElseThrow(() -> new exception.DogpawNotFoundException("Work space with id : " + channelId + "is not valid"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new exception.DogpawNotFoundException("User with id : " + userId + "is not valid"));
 
         userWorkspaceRepository.save(UserWorkspace.builder()
                 .user(user)
