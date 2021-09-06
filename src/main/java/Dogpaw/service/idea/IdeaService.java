@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -43,9 +42,10 @@ public class IdeaService {
         ideaRepository.deleteById(id);
     }
 
-    public Optional<Idea> checkIdea(Long id) {
-        Optional<Idea> idea = ideaRepository.findById(id);
-        return idea;
+    public void updateByIdeaId(Long id, String text) throws exception.DogpawNotFoundException {
+        Idea idea = findOne(id);
+        idea.setText(text);
+        ideaRepository.save(idea);
     }
 
     public Idea findOne(Long id) throws exception.DogpawNotFoundException{
