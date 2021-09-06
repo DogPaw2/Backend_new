@@ -33,8 +33,8 @@ public class MessageRoomApiController {
     }
 
     @DeleteMapping("/messageroom")
-    public ResponseDTO.Delete deleteMessageRoom(@RequestBody MessageRoomDTO.Delete dto) throws exception.DogpawNotFoundException {
-        messageRoomService.deleteByMessageRoomId(dto.getId());
+    public ResponseDTO.Delete deleteMessageRoom(@RequestParam Long messageRoomId) throws exception.DogpawNotFoundException {
+        messageRoomService.deleteByMessageRoomId(messageRoomId);
         return new ResponseDTO.Delete(true);
     }
 
@@ -43,6 +43,5 @@ public class MessageRoomApiController {
         MessageRoom messageRoom = messageRoomService.findOne(messageRoomId);
         List<MessageMapping> messageList = messageService.getMessageList(messageRoomId);
         return new ResponseDTO.MessageRoomResponse(true, messageList, messageRoom);
-    }
 
 }

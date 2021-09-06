@@ -28,6 +28,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -50,6 +51,7 @@ public class IdeaApiController {
         LocalDate date = LocalDate.now();
         LocalTime time = LocalTime.now();
         Idea idea = new Idea(user, dto.getText(), date, time, ideaBoard);
+
         Long saveId = IdeaService.saveIdea(idea);
 
         if(!files[0].isEmpty()) {

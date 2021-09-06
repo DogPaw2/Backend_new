@@ -40,8 +40,8 @@ public class MessageApiController {
     }
 
     @DeleteMapping("/message")
-    public ResponseDTO.Delete deleteMessage(@RequestBody MessageDTO.Delete dto) throws exception.DogpawNotFoundException {
-        messageService.deleteByMessageId(dto.getId());
+    public ResponseDTO.Delete deleteMessage(@RequestParam Long messageId) throws exception.DogpawNotFoundException {
+        messageService.deleteByMessageId(messageId);
         return new ResponseDTO.Delete(true);
     }
 }
