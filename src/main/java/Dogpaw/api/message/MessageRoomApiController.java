@@ -24,7 +24,7 @@ public class MessageRoomApiController {
     private final MessageService messageService;
 
     @PostMapping("/messageroom")
-    public ResponseDTO.Create createMessageRoom (@RequestBody MessageRoomDTO.Create dto) throws exception.ArgumentNullException, exception.InvalidArgumentException{
+    public ResponseDTO.Create createMessageRoom(@RequestBody MessageRoomDTO.Create dto) throws exception.ArgumentNullException, exception.InvalidArgumentException {
         MessageRoom messageRoom = new MessageRoom(dto.getUserId());
 
         Long saveId = messageRoomService.saveMessageRoom(messageRoom);
@@ -44,4 +44,5 @@ public class MessageRoomApiController {
         List<MessageMapping> messageList = messageService.getMessageList(messageRoomId);
         return new ResponseDTO.MessageRoomResponse(true, messageList, messageRoom);
 
+    }
 }
