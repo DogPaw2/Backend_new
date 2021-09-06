@@ -3,6 +3,7 @@ package Dogpaw.service;
 import Dogpaw.domain.*;
 import Dogpaw.domain.chatting.Chatting;
 import Dogpaw.domain.idea.IdeaBoard;
+import Dogpaw.repository.ChannelRepository;
 import Dogpaw.repository.UserRepository;
 import Dogpaw.repository.UserWorkspaceRepository;
 import Dogpaw.repository.WorkspaceRepository;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.event.ChangeEvent;
 import java.util.List;
 
 @Service
@@ -45,6 +47,13 @@ public class WorkspaceService {
 
     }
 
+
+    public void addChannel(Long workspaceId, Channel channel) throws exception.DogpawNotFoundException {
+        Workspace workspace = workspaceRepository.findById(workspaceId).orElseThrow(() -> new exception.DogpawNotFoundException("Work space with id : " + workspaceId + "is not valid"));
+        workspace.getChannels().add(channel);
+        workspaceRepository.save(workspace);
+    }
+
     public Long saveWorkSpace (Workspace workspace, Long userId) throws exception.ArgumentNullException, exception.InvalidArgumentException, exception.DogpawNotFoundException {
         //fail fast pattern
         //if Argument is invalid, dont do any logic
@@ -58,7 +67,7 @@ public class WorkspaceService {
         IdeaBoard ideaBoard = new IdeaBoard();
         chattingService.saveChatting(chatting);
         ideaBoardService.saveIdeaBoard(ideaBoard);
-        Channel channel = new Channel("General", "-", chatting, ideaBoard);
+        Channel channel = new Channel("General", "-", chatting, ideaBoard, workspace);
         channelService.saveChannel(channel, userId);
         workspace.getChannels().add(channel);
 
@@ -84,7 +93,6 @@ public class WorkspaceService {
     public void deleteByWorkSpaceId(Long id) throws exception.DogpawNotFoundException {
 
         workspaceRepository.deleteById(id);
-
     }
 
     public List<UserWorkspace> getWorkspaceList(Long id) throws exception.DogpawNotFoundException{

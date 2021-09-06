@@ -89,20 +89,20 @@ public class CommentApiController {
 
 
     @DeleteMapping("/chat/comment")
-    public ResponseDTO.Delete deleteChatComment(@RequestBody CommentDTO.Delete dto) throws exception.DogpawNotFoundException {
-        chatCommentService.deleteByCommentId(dto.getId());
+    public ResponseDTO.Delete deleteChatComment(@RequestParam Long id) throws exception.DogpawNotFoundException {
+        chatCommentService.deleteByCommentId(id);
         return new ResponseDTO.Delete(true);
     }
 
     @DeleteMapping("/idea/comment")
-    public ResponseDTO.Delete deleteIdeaComment(@RequestBody CommentDTO.Delete dto) throws exception.DogpawNotFoundException {
-        ideaCommentService.deleteByCommentId(dto.getId());
+    public ResponseDTO.Delete deleteIdeaComment(@RequestParam Long id) throws exception.DogpawNotFoundException {
+        ideaCommentService.deleteByCommentId(id);
         return new ResponseDTO.Delete(true);
     }
 
     @DeleteMapping("/message/comment")
-    public ResponseDTO.Delete deleteMessageComment(@RequestBody CommentDTO.Delete dto) throws exception.DogpawNotFoundException {
-        messageCommentService.deleteByCommentId(dto.getId());
+    public ResponseDTO.Delete deleteMessageComment(@RequestParam Long id) throws exception.DogpawNotFoundException {
+        messageCommentService.deleteByCommentId(id);
         return new ResponseDTO.Delete(true);
     }
 
