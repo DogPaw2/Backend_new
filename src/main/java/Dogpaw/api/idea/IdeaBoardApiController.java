@@ -1,4 +1,4 @@
-package Dogpaw.api;
+package Dogpaw.api.idea;
 
 import Dogpaw.domain.idea.IdeaMapping;
 import Dogpaw.domain.idea.IdeaBoard;

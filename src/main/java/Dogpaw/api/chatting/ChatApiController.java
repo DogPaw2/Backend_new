@@ -1,4 +1,4 @@
-package Dogpaw.api;
+package Dogpaw.api.chatting;
 
 import Dogpaw.domain.chatting.Chat;
 import Dogpaw.domain.chatting.Chatting;
