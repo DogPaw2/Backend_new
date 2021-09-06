@@ -13,6 +13,7 @@ public class UserWorkspace {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Getter
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     private User user;

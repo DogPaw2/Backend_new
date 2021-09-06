@@ -26,6 +26,4 @@ public class Mail {
 
     @NonNull
     private String message;
-
-    private boolean validation = true;
 }

@@ -1,9 +1,11 @@
 package Dogpaw.api.message;
 
+import Dogpaw.domain.User;
 import Dogpaw.domain.message.MessageMapping;
 import Dogpaw.domain.message.MessageRoom;
 import Dogpaw.dto.message.MessageRoomDTO;
 import Dogpaw.dto.ResponseDTO;
+import Dogpaw.service.UserService;
 import Dogpaw.service.exception.exception;
 import Dogpaw.service.message.MessageRoomService;
 import Dogpaw.service.message.MessageService;
@@ -21,7 +23,10 @@ public class MessageRoomApiController {
 
     @NonNull
     private final MessageRoomService messageRoomService;
+    @NonNull
     private final MessageService messageService;
+    @NonNull
+    private final UserService userService;
 
     @PostMapping("/messageroom")
     public ResponseDTO.Create createMessageRoom (@RequestBody MessageRoomDTO.Create dto) throws exception.ArgumentNullException, exception.InvalidArgumentException{
@@ -44,4 +49,5 @@ public class MessageRoomApiController {
         List<MessageMapping> messageList = messageService.getMessageList(messageRoomId);
         return new ResponseDTO.MessageRoomResponse(true, messageList, messageRoom);
     }
+    
 }

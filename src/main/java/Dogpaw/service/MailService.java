@@ -47,9 +47,4 @@ public class MailService {
         return mail;
     }
 
-    public void checkValidation(Long id) throws exception.DogpawNotFoundException {
-        Mail mail = findOne(id);
-        mail.setValidation(false);
-        mailRepository.save(mail);
-    }
 }
