@@ -1,5 +1,7 @@
 package Dogpaw.domain;
 
+import Dogpaw.domain.message.MessageRoom;
+import Dogpaw.domain.message.UserMessageRoom;
 import lombok.*;
 
 import javax.persistence.*;
@@ -25,4 +27,8 @@ public class User {
     @Getter(AccessLevel.NONE)
     @OneToMany(mappedBy = "user")
     private List<UserWorkspace> userWorkspaces = new ArrayList<>();
+
+    @Getter(AccessLevel.NONE)
+    @OneToMany(mappedBy = "user")
+    private List<UserMessageRoom> userMessageRooms = new ArrayList<>();
 }

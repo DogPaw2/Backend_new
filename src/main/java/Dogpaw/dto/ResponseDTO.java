@@ -7,6 +7,7 @@ import Dogpaw.domain.idea.IdeaBoard;
 import Dogpaw.domain.idea.IdeaMapping;
 import Dogpaw.domain.message.MessageMapping;
 import Dogpaw.domain.message.MessageRoom;
+import Dogpaw.domain.message.UserMessageRoom;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.core.io.Resource;
@@ -67,6 +68,13 @@ public class ResponseDTO {
         Boolean success;
         private List<MessageMapping> messages;
         private MessageRoom messageRoom;
+    }
+
+    @Data
+    @AllArgsConstructor
+    public static class MessageRoomAllResponse{
+        Boolean success;
+        private List<UserMessageRoom> userMessageRoomList;
     }
 
     @Data
