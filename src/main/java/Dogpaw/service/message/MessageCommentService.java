@@ -37,6 +37,12 @@ public class MessageCommentService {
         commentRepository.deleteById(id);
     }
 
+    public void updateByCommentId(Long id, String text) throws exception.DogpawNotFoundException {
+        MessageComment messageComment = findOne(id);
+        messageComment.setText(text);
+        commentRepository.save(messageComment);
+    }
+
     public MessageComment findOne(Long id) throws exception.DogpawNotFoundException{
         MessageComment comment = commentRepository.findById(id).orElseThrow(() -> new exception.DogpawNotFoundException("Comment with id : " + id + "is not valid"));
         return comment;

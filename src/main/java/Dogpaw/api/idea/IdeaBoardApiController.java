@@ -23,9 +23,9 @@ public class IdeaBoardApiController {
 
 
     @GetMapping("/ideaBoard")
-    public ResponseDTO.IdeaBoardResponse getIdeaBoard(@RequestParam Long id) throws exception.DogpawNotFoundException{
-        IdeaBoard IdeaBoard = IdeaBoardService.findOne(id);
-        List<IdeaMapping> IdeaList = IdeaService.getIdeaList(id);
+    public ResponseDTO.IdeaBoardResponse getIdeaBoard(@RequestParam Long ideaBoardId) throws exception.DogpawNotFoundException{
+        IdeaBoard IdeaBoard = IdeaBoardService.findOne(ideaBoardId);
+        List<IdeaMapping> IdeaList = IdeaService.getIdeaList(ideaBoardId);
         return new ResponseDTO.IdeaBoardResponse(true, IdeaBoard, IdeaList);
     }
 }

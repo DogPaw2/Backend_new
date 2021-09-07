@@ -18,6 +18,7 @@ public class CommentDTO {
 
     @Data
     public static class Update {
+        private Long id;
         private String text;
     }
 

@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -38,21 +39,21 @@ import java.time.LocalTime;
 @CrossOrigin(origins = "*")
 public class IdeaApiController {
     @NonNull
-    private final IdeaService IdeaService;
-    private final IdeaBoardService IdeaBoardService;
+    private final IdeaService ideaService;
+    private final IdeaBoardService ideaBoardService;
     private final UserService userService;
     private final IdeaFileService fileService;
 
 
     @PostMapping("/idea")
     public ResponseDTO.Create createIdea(@RequestPart(value = "dto") IdeaDTO.Create dto, @RequestPart(value = "files") MultipartFile[] files) throws IOException, NoSuchAlgorithmException, exception.DogpawNotFoundException, exception.InvalidArgumentException, exception.ArgumentNullException {
-        IdeaBoard ideaBoard = IdeaBoardService.findOne(dto.getIdeaBoardId());
+        IdeaBoard ideaBoard = ideaBoardService.findOne(dto.getIdeaBoardId());
         User user = userService.findOne(dto.getUserId());
         LocalDate date = LocalDate.now();
         LocalTime time = LocalTime.now();
         Idea idea = new Idea(user, dto.getText(), date, time, ideaBoard);
 
-        Long saveId = IdeaService.saveIdea(idea);
+        Long saveId = ideaService.saveIdea(idea);
 
         if(!files[0].isEmpty()) {
             for(MultipartFile file : files) {
@@ -80,8 +81,32 @@ public class IdeaApiController {
     }
 
     @PutMapping("/idea")
-    public ResponseDTO.Update updateIdea(@RequestBody IdeaDTO.Update dto) throws exception.DogpawNotFoundException {
-        IdeaService.updateByIdeaId(dto.getId(), dto.getText());
+    public ResponseDTO.Update updateIdea(@RequestPart(value = "dto") IdeaDTO.Update dto, @RequestPart(value = "files") MultipartFile[] files) throws exception.DogpawNotFoundException, IOException, NoSuchAlgorithmException, exception.InvalidArgumentException, exception.ArgumentNullException {
+        ideaService.updateByIdeaId(dto.getId(), dto.getText());
+
+        if(!files[0].isEmpty()) {
+            for(MultipartFile file : files) {
+                String originFileName = file.getOriginalFilename();
+                String fileName = new MD5Generator(originFileName).toString();
+                String contentType = file.getContentType();
+                Long fileSize = file.getSize();
+                String savePath = System.getProperty("user.dir") + "/ideaFiles";
+
+                if (!new File(savePath).exists()) {
+                    try {
+                        new File(savePath).mkdir();
+                    } catch (Exception e) {
+                        e.getStackTrace();
+                    }
+                }
+                String filePath = savePath + "/" + fileName;
+                file.transferTo(new File(filePath));
+
+                IdeaFile ideaFile = new IdeaFile(originFileName, fileName, contentType, fileSize, filePath, ideaService.findOne(dto.getId()));
+                fileService.saveFile(ideaFile);
+            }
+        }
+
         return new ResponseDTO.Update(true);
     }
 
@@ -98,8 +123,14 @@ public class IdeaApiController {
     }
 
     @DeleteMapping("/idea")
-    public ResponseDTO.Delete createIdea(@RequestParam Long id) throws exception.DogpawNotFoundException {
-        IdeaService.deleteByIdeaId(id);
+    public ResponseDTO.Delete deleteIdea(@RequestParam Long ideaId) throws exception.DogpawNotFoundException {
+        ideaService.deleteByIdeaId(ideaId);
+        return new ResponseDTO.Delete(true);
+    }
+
+    @DeleteMapping("/idea/file")
+    public ResponseDTO.Delete deleteFile(@RequestParam Long fileId) throws exception.DogpawNotFoundException {
+        fileService.deleteByFileId(fileId);
         return new ResponseDTO.Delete(true);
     }
 }

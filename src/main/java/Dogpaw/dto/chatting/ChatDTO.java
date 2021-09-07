@@ -17,6 +17,7 @@ public class ChatDTO {
 
     @Data
     public static class Update {
+        private Long id;
         private String text;
     }
 
