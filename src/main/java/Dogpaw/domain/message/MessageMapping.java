@@ -9,6 +9,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 public interface MessageMapping {
+    Long getId();
     byte getSendBy();
     String getText();
     LocalDate getDate();
