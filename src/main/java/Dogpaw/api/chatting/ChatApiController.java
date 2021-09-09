@@ -78,6 +78,36 @@ public class ChatApiController {
         return new ResponseDTO.Create(saveId, true);
     }
 
+    @PutMapping("/chat")
+    public ResponseDTO.Update updatechat(@RequestPart(value = "dto") ChatDTO.Update dto, @RequestPart(value = "files") MultipartFile[] files) throws exception.DogpawNotFoundException, IOException, NoSuchAlgorithmException, exception.InvalidArgumentException, exception.ArgumentNullException {
+        chatService.updateByChatId(dto.getId(), dto.getText());
+
+        if (!files[0].isEmpty()) {
+            for (MultipartFile file : files) {
+                String originFileName = file.getOriginalFilename();
+                String fileName = new MD5Generator(originFileName).toString();
+                String contentType = file.getContentType();
+                Long fileSize = file.getSize();
+                String savePath = System.getProperty("user.dir") + "/chatFiles";
+
+                if (!new File(savePath).exists()) {
+                    try {
+                        new File(savePath).mkdir();
+                    } catch (Exception e) {
+                        e.getStackTrace();
+                    }
+                }
+                String filePath = savePath + "/" + fileName;
+                file.transferTo(new File(filePath));
+
+                ChatFile chatFile = new ChatFile(originFileName, fileName, contentType, fileSize, filePath, chatService.findOne(dto.getId()));
+                fileService.saveFile(chatFile);
+            }
+        }
+
+        return new ResponseDTO.Update(true);
+    }
+    
     @GetMapping("/chat/download")
     public ResponseEntity<Resource> fileDownload(@RequestParam Long fileId) throws IOException {
         ChatFile file = fileService.getFile(fileId);
@@ -91,8 +121,14 @@ public class ChatApiController {
     }
 
     @DeleteMapping("/chat")
-    public ResponseDTO.Delete createChat(@RequestBody ChatDTO.Delete dto) throws exception.DogpawNotFoundException {
-        chatService.deleteByChatId(dto.getId());
+    public ResponseDTO.Delete deleteChat(@RequestParam Long chatId) throws exception.DogpawNotFoundException {
+        chatService.deleteByChatId(chatId);
+        return new ResponseDTO.Delete(true);
+    }
+
+    @DeleteMapping("/chat/file")
+    public ResponseDTO.Delete deleteFile(@RequestParam Long fileId) throws exception.DogpawNotFoundException {
+        fileService.deleteByFileId(fileId);
         return new ResponseDTO.Delete(true);
     }
 }

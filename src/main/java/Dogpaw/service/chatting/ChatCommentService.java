@@ -2,6 +2,7 @@ package Dogpaw.service.chatting;
 
 
 import Dogpaw.domain.chatting.ChatComment;
+import Dogpaw.domain.idea.Idea;
 import Dogpaw.repository.chatting.ChatRepository;
 import Dogpaw.repository.chatting.ChatCommentRepository;
 import Dogpaw.service.exception.exception;
@@ -37,11 +38,16 @@ public class ChatCommentService {
         commentRepository.deleteById(id);
     }
 
+    public void updateByCommentId(Long id, String text) throws exception.DogpawNotFoundException {
+        ChatComment chatComment = findOne(id);
+        chatComment.setText(text);
+        commentRepository.save(chatComment);
+    }
+
     public ChatComment findOne(Long id) throws exception.DogpawNotFoundException{
         ChatComment comment = commentRepository.findById(id).orElseThrow(() -> new exception.DogpawNotFoundException("Comment with id : " + id + "is not valid"));
         return comment;
     }
-
 }
 
 

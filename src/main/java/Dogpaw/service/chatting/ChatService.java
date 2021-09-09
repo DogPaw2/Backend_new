@@ -4,6 +4,7 @@ package Dogpaw.service.chatting;
 import Dogpaw.domain.chatting.Chat;
 import Dogpaw.domain.chatting.ChatMapping;
 import Dogpaw.domain.chatting.Chatting;
+import Dogpaw.domain.idea.Idea;
 import Dogpaw.repository.chatting.ChatRepository;
 import Dogpaw.repository.chatting.ChattingRepository;
 import Dogpaw.service.exception.exception;
@@ -39,9 +40,10 @@ public class ChatService {
         chatRepository.deleteById(id);
     }
 
-    public Optional<Chat> checkChat(Long id) {
-        Optional<Chat> chat = chatRepository.findById(id);
-        return chat;
+    public void updateByChatId(Long id, String text) throws exception.DogpawNotFoundException {
+        Chat chat = findOne(id);
+        chat.setText(text);
+        chatRepository.save(chat);
     }
 
     public Chat findOne(Long id) throws exception.DogpawNotFoundException{

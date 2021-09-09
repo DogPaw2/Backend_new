@@ -11,6 +11,7 @@ import java.util.List;
 
 public interface MessageMapping {
     User getUser();
+    Long getId();
     String getText();
     LocalDate getDate();
     LocalTime getTime();

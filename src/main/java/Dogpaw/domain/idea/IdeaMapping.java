@@ -9,6 +9,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 public interface IdeaMapping {
+    Long getId();
     User getUser();
     String getText();
     LocalDate getDate();
