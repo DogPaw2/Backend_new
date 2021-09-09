@@ -6,14 +6,9 @@ import lombok.Data;
 public class MessageRoomDTO {
 
     @Data
-    public static class Create extends Update {
-
-    }
-
-    @Data
-    public static class Update {
-        private Long userId;
-
+    public static class Create {
+        private Long userId1;
+        private Long userId2;
     }
 
     @Data

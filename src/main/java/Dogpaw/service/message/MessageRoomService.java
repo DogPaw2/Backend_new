@@ -29,16 +29,31 @@ public class MessageRoomService {
     @NonNull
     private final UserMessageRoomRepository userMessageRoomRepository;
 
-    public Long saveMessageRoom(MessageRoom messageRoom, Long userId) throws exception.ArgumentNullException, exception.DogpawNotFoundException {
+    public void addUser(Long userId, Long messageRoomId) {
+        MessageRoom messageRoom = messageRoomRepository.findById(messageRoomId).get();
+        User user = userRepository.findById(userId).get();
+
+        userMessageRoomRepository.save(UserMessageRoom.builder()
+                .user(user)
+                .messageRoom(messageRoom)
+                .build());
+    }
+
+
+    public Long saveMessageRoom(MessageRoom messageRoom, Long userId1, Long userId2) throws exception.ArgumentNullException, exception.DogpawNotFoundException {
         if(messageRoom == null) {
             throw new exception.ArgumentNullException("MessageRoom can't be null");
         }
-        if(userId == null) {
-            throw new exception.ArgumentNullException("userId can't be null");
+        if(userId1 == null) {
+            throw new exception.ArgumentNullException("userId1 can't be null");
         }
-        User user = userRepository.findById(userId).orElseThrow(() -> new exception.DogpawNotFoundException("User with id : " + userId + "is not valid"));
-        UserMessageRoom userMessageRoom = new UserMessageRoom(user, messageRoom);
+        if(userId2 == null) {
+            throw new exception.ArgumentNullException("userId2 can't be null");
+        }
+
         MessageRoom save = messageRoomRepository.save(messageRoom);
+        addUser(userId1, messageRoom.getId());
+        addUser(userId2, messageRoom.getId());
 
         return save.getId();
     }

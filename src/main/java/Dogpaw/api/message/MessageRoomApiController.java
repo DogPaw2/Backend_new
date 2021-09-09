@@ -28,7 +28,7 @@ public class MessageRoomApiController {
     @PostMapping("/messageroom")
     public ResponseDTO.Create createMessageRoom (@RequestBody MessageRoomDTO.Create dto) throws exception.ArgumentNullException, exception.DogpawNotFoundException {
         MessageRoom messageRoom = new MessageRoom();
-        Long saveId = messageRoomService.saveMessageRoom(messageRoom, dto.getUserId());
+        Long saveId = messageRoomService.saveMessageRoom(messageRoom, dto.getUserId1(), dto.getUserId2());
 
         return new ResponseDTO.Create(saveId, true);
     }
@@ -46,7 +46,7 @@ public class MessageRoomApiController {
         return new ResponseDTO.MessageRoomResponse(true, messageList, messageRoom);
     }
 
-    @GetMapping("/messageroom")
+    @GetMapping("/messageroomall")
     public ResponseDTO.MessageRoomAllResponse getAllMessageRoom(@RequestParam Long userId) {
         List<UserMessageRoom> userMessageRoomList = messageRoomService.getMessageRoomList(userId);
         return new ResponseDTO.MessageRoomAllResponse(true, userMessageRoomList);

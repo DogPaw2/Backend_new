@@ -1,10 +1,12 @@
 package Dogpaw.api.message;
 
+import Dogpaw.domain.User;
 import Dogpaw.domain.message.Message;
 import Dogpaw.domain.message.MessageFile;
 import Dogpaw.domain.message.MessageRoom;
 import Dogpaw.dto.message.MessageDTO;
 import Dogpaw.dto.ResponseDTO;
+import Dogpaw.service.UserService;
 import Dogpaw.service.exception.exception;
 import Dogpaw.service.message.MessageFileService;
 import Dogpaw.service.message.MessageRoomService;
@@ -26,6 +28,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 
 @RestController
@@ -38,11 +42,17 @@ public class MessageApiController {
     private final MessageService messageService;
     private final MessageRoomService messageRoomService;
     private final MessageFileService fileService;
+    private final UserService userService;
 
     @PostMapping("/message")
     public ResponseDTO.Create createMessage(@RequestPart MessageDTO.Create dto,  @RequestPart(value = "files") MultipartFile[] files) throws exception.ArgumentNullException, exception.InvalidArgumentException, exception.DogpawNotFoundException, IOException, NoSuchAlgorithmException {
         MessageRoom messageRoom = messageRoomService.findOne(dto.getMessageRoomId());
-        Message message = new Message(dto.getSendBy(), dto.getText(), messageRoom);
+        User user = userService.findOne(dto.getUserId());
+
+        LocalDate date = LocalDate.now();
+        LocalTime time = LocalTime.now();
+
+        Message message = new Message(user, dto.getText(), date, time, messageRoom);
         Long saveId = messageService.saveMessage(message);
 
         if(!files[0].isEmpty()) {

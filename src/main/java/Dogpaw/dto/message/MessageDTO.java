@@ -1,5 +1,6 @@
 package Dogpaw.dto.message;
 
+import Dogpaw.domain.User;
 import lombok.Data;
 
 public class MessageDTO {
@@ -7,7 +8,7 @@ public class MessageDTO {
     @Data
     public static class Create {
         private Long messageRoomId;
-        private byte sendBy;
+        private Long userId;
         private String text;
     }
 
