@@ -1,5 +1,6 @@
 package Dogpaw.domain;
 
+import Dogpaw.domain.message.MessageRoom;
 import lombok.*;
 
 import javax.persistence.*;
@@ -30,4 +31,7 @@ public class Workspace {
 
     @OneToMany(mappedBy = "workspace", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Channel> channels = new ArrayList<>();
+
+    @OneToMany(mappedBy = "workspace", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MessageRoom> messageRooms = new ArrayList<>();
 }

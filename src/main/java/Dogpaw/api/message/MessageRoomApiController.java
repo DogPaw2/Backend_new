@@ -1,10 +1,12 @@
 package Dogpaw.api.message;
 
+import Dogpaw.domain.Workspace;
 import Dogpaw.domain.message.MessageMapping;
 import Dogpaw.domain.message.MessageRoom;
 import Dogpaw.domain.message.UserMessageRoom;
 import Dogpaw.dto.message.MessageRoomDTO;
 import Dogpaw.dto.ResponseDTO;
+import Dogpaw.service.WorkspaceService;
 import Dogpaw.service.exception.exception;
 import Dogpaw.service.message.MessageRoomService;
 import Dogpaw.service.message.MessageService;
@@ -24,11 +26,17 @@ public class MessageRoomApiController {
     private final MessageRoomService messageRoomService;
     @NonNull
     private final MessageService messageService;
+    @NonNull
+    private final WorkspaceService workspaceService;
 
     @PostMapping("/messageroom")
     public ResponseDTO.Create createMessageRoom (@RequestBody MessageRoomDTO.Create dto) throws exception.ArgumentNullException, exception.DogpawNotFoundException {
-        MessageRoom messageRoom = new MessageRoom();
+        Workspace workspace = workspaceService.findOne(dto.getWorkspaceId());
+        MessageRoom messageRoom = new MessageRoom(workspace);
+
         Long saveId = messageRoomService.saveMessageRoom(messageRoom, dto.getUserId1(), dto.getUserId2());
+
+        workspaceService.addMessageRoom(dto.getWorkspaceId(), messageRoom);
 
         return new ResponseDTO.Create(saveId, true);
     }

@@ -9,6 +9,7 @@ public class MessageRoomDTO {
     public static class Create {
         private Long userId1;
         private Long userId2;
+        private Long workspaceId;
     }
 
     @Data
