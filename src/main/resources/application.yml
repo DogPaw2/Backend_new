@@ -7,8 +7,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: EMAILADDRESS
-    password: PASSWORD
+    username: dogpaw.swit@gmail.com
+    password: edutech123
     properties:
       mail:
         smtp:
